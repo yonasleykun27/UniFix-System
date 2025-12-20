@@ -2,7 +2,7 @@
 
 UniFix is a professional web-based platform designed for university students and faculty to report infrastructure and academic issues. The system features an automated **Round-Robin assignment logic** that routes reports to specialized staff (Solvers) and provides a real-time tracking dashboard for administrators.
 
-**Live Demo:** [https://unifix-dbu.netlify.app/]  (https://unifix-dbu.netlify.app/)
+**Live Demo:** [https://unifix-dbu.netlify.app/] 
 
 ---
 
