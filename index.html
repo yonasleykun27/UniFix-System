@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFix - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="./Img/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./Img/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./Img/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="./Img/favicon_io/site.webmanifest">
+</head>
+<body class="bg-university">
+
+    <div class="utility-bar">
+        <div id="liveClock" class="badge bg-primary d-flex align-items-center me-2 shadow-sm" style="font-size: 0.9rem;">
+            00:00
+        </div>
+        <button class="btn btn-light btn-sm shadow-sm" onclick="if(window.System) System.toggleTheme()">
+            <i id="themeIcon" class="bi bi-moon-stars-fill"></i> <span data-i18n="darkMode">Mode</span>
+        </button>
+        <button class="btn btn-light btn-sm shadow-sm" onclick="if(window.System) System.toggleLanguage()">
+            <i class="bi bi-translate"></i> <span id="langBtnText">Amharic</span>
+        </button>
+    </div>
+
+    <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <div class="container d-flex justify-content-center align-items-center min-vh-100 fade-in">
+        <div class="card card-custom p-4 p-md-5" style="width: 100%; max-width: 420px;">
+            
+            <div class="text-center mb-4">
+                <div class="mb-2">
+                    <i class="bi bi-buildings-fill text-primary" style="font-size: 3.5rem;"></i>
+                </div>
+                <h3 class="fw-bold mt-2 text-primary" data-i18n="loginTitle">UniFix Login</h3>
+                <p class="text-muted small" data-i18n="loginSubtitle">University Problem Reporting System</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" data-i18n="lblUsername">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-person-fill text-primary"></i></span>
+                        <input type="text" id="username" class="form-control border-start-0 ps-0" placeholder="Enter Username" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold" data-i18n="lblPassword">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-lock-fill text-primary"></i></span>
+                        <input type="password" id="password" class="form-control border-start-0 ps-0" placeholder="Enter Password" required>
+                        <button class="btn btn-outline-secondary border-start-0" type="button" onclick="togglePwd()">
+                            <i class="bi bi-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" id="loginBtn" class="btn btn-primary btn-lg shadow-sm fw-bold" data-i18n="loginBtn">Login</button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4 border-top pt-4">
+                <p class="text-muted small mb-2" data-i18n="noAccount">Don't have an account?</p>
+                <div class="d-flex justify-content-center gap-2">
+                    <a href="register_student.html" class="btn btn-sm btn-outline-adaptive" data-i18n="registerStudent">Register as Student</a>
+                    <a href="register_teacher.html" class="btn btn-sm btn-outline-adaptive" data-i18n="registerTeacher">Register as Teacher</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/quagga/dist/quagga.min.js"></script>
+    
+    <script type="module" src="js/main.js"></script>
+
+    <script>
+        function togglePwd() {
+            const input = document.getElementById('password');
+            const icon = document.getElementById('eyeIcon');
+            if(input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        }
+
+        
+        window.addEventListener('load', () => {
+            const checkSystem = setInterval(() => {
+                if(window.System) {
+                    clearInterval(checkSystem);
+                    if(window.System.currentUser) {
+                        redirectUser(window.System.currentUser.role);
+                    }
+                }
+            }, 100);
+
+          
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('loginBtn');
+                const originalText = btn.innerText;
+                btn.disabled = true;
+                btn.innerText = "Verifying...";
+
+                const user = document.getElementById('username').value.trim();
+                const pass = document.getElementById('password').value;
+
+                if(!window.System) {
+                    alert("System loading... please wait 2 seconds.");
+                    btn.disabled = false; btn.innerText = originalText;
+                    return;
+                }
+
+              
+                const result = await System.login(user, pass);
+
+                if(result.success) {
+                  
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-success');
+                    btn.innerText = "Success!";
+                    
+                    setTimeout(() => {
+                        redirectUser(result.role);
+                    }, 500);
+                } else {
+                   
+                    System.showToast(result.message, "danger");
+                    btn.disabled = false;
+                    btn.classList.add('btn-primary');
+                    btn.classList.remove('btn-success');
+                    btn.innerText = originalText;
+                }
+            });
+        });
+
+        function redirectUser(role) {
+            if(role === 'Student') window.location.href = 'student_dashboard.html';
+            else if(role === 'Teacher') window.location.href = 'teacher_dashboard.html';
+            else if(role === 'Admin') window.location.href = 'admin_dashboard.html';
+            else if(role === 'Solver') window.location.href = 'solver_dashboard.html';
+        }
+    </script>
+</body>
+</html>
