@@ -54,5 +54,5 @@ UniFix is a professional web-based platform designed for university students and
 │   └── main.js             # Core System & Firebase Config
 └── Img/                    # Assets and Favicons
 
-📜 License
+## 📜 License
 This project is for educational purposes at Debre Berhan University.
