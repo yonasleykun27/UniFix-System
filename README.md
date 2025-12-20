@@ -1,6 +1,5 @@
 # 🛠️ UniFix - University Problem Reporting System
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/your-netlify-id/deploy-status)](https://unifix-dbu.netlify.app/)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Firebase](https://img.shields.io/badge/Backend-Firebase-orange)
 
@@ -52,10 +51,10 @@ The core of UniFix is its automated assignment engine. When an administrator app
 ## 🚀 Tech Stack
 
 - **Frontend:** HTML5, CSS3 (Custom Glassmorphism UI), Bootstrap 5.3
-- **Backend/Database:** Firebase Firestore (NoSQL)
+- **Backend/Database:** Firebase Firestore 
 - **Authentication:** Custom Session Security via Firestore
 - **Barcode Scanning:** QuaggaJS Library
-- **Hosting:** Netlify (Continuous Deployment)
+- **Hosting:** Netlify 
 - **Icons:** Bootstrap Icons
 
 ---
@@ -73,34 +72,6 @@ The core of UniFix is its automated assignment engine. When an administrator app
 ├── css/
 │   └── style.css           # Global styles & Mobile UI fixes
 ├── js/
-│   ├── main.js             # Core Engine & Firebase Config
-│   ├── login.js            # Authentication logic
-│   └── dashboards.js       # UI rendering logic
+│   └── main.js             # Core Engine & Firebase Config
 └── Img/                    # Assets and Favicons
-🛠️ Installation & Setup
-Clone the repository:
 
-Bash
-
-git clone [https://github.com/your-username/UniFix-System.git](https://github.com/your-username/UniFix-System.git)
-Configure Firebase:
-
-Create a project on Firebase Console.
-
-Copy your credentials into the firebaseConfig object in js/main.js.
-
-Deploy:
-
-Connect your GitHub repo to Netlify for automated builds.
-
-📜 License
-This project was developed for Debre Berhan University. For educational use only.
-
-Developed with ❤️ by [Your Name]
-
-
-### Pro-Tips for your GitHub profile:
-1.  **Replace placeholders**: In the `Screenshots` section, replace the placeholder links with actual screenshots you take of your site. Upload them to a folder in your repo called `screenshots` and link them like `![alt text](screenshots/login.png)`.
-2.  **Netlify Badge**: To get your actual Netlify badge, go to **Netlify Dashboard > Site Settings > Deployments > Status Badges** and copy the Markdown code provided there.
-
-**Would you like me to help you write a "Documentation" file to explain how the Firebase logic works for other developers?**
