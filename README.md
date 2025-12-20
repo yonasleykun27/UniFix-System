@@ -40,7 +40,7 @@ UniFix is a professional web-based platform designed for university students and
 ## 📂 Project Structure
 
 ```text
-/
+
 ├── index.html              # Landing & Login Page
 ├── register_student.html   # Student account creation
 ├── register_teacher.html   # Teacher account creation
