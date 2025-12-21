@@ -15,7 +15,6 @@ UniFix is a professional web-based platform designed for university students and
 | :---: | :---: | :---: |
 | ![Login](https://via.placeholder.com/200x400?text=Login+UI) | ![Student](https://via.placeholder.com/200x400?text=Student+UI) | ![Admin](https://via.placeholder.com/200x400?text=Admin+UI) |
 
-*(Note: Replace placeholder links with your actual image paths from your `Img` folder)*
 
 ---
 
