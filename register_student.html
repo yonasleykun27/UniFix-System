@@ -57,7 +57,7 @@
             <i id="themeIcon" class="bi bi-moon-stars-fill"></i>
         </button>
         <button class="btn btn-light btn-sm shadow-sm" onclick="if(window.System) System.toggleLanguage()">
-            <i class="bi bi-translate"></i>
+            <i class="bi bi-translate"></i> <span id="langBtnText">Amharic</span>
         </button>
     </div>
 
@@ -81,7 +81,7 @@
                                 <label class="form-label fw-bold" data-i18n="fullName">Full Name</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" id="fullName" class="form-control" placeholder="Full Name" required>
+                                    <input type="text" id="fullName" class="form-control" data-i18n="phFullName" placeholder="Full Name" required>
                                     <div class="invalid-feedback">Full name is required.</div>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                                 <label class="form-label fw-bold" data-i18n="studentId">Student ID</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="bi bi-card-heading"></i></span>
-                                    <input type="text" id="studentId" class="form-control" placeholder="DBU..." required>
+                                    <input type="text" id="studentId" class="form-control" data-i18n="phStudentId" placeholder="DBU..." required>
                                     <div class="invalid-feedback">Valid Student ID is required.</div>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
                                 <label class="form-label fw-bold" data-i18n="username">Username</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="bi bi-at"></i></span>
-                                    <input type="text" id="username" class="form-control" placeholder="stud12345" required>
+                                    <input type="text" id="username" class="form-control" data-i18n="phUsernameStud" placeholder="stud12345" required>
                                     <div class="invalid-feedback">Username (stud + 5 digits) is required.</div>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                                 <label class="form-label fw-bold" data-i18n="password">Password</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="bi bi-key"></i></span>
-                                    <input type="password" id="password" class="form-control" required minlength="6">
+                                    <input type="password" id="password" class="form-control" data-i18n="phPassword" placeholder="Password" required minlength="6">
                                     <button class="btn btn-outline-secondary" type="button" onclick="toggleRegPwd()">
                                         <i class="bi bi-eye" id="eyeIcon"></i>
                                     </button>
@@ -120,12 +120,12 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold" data-i18n="dept">Department</label>
-                                <input type="text" id="dept" class="form-control" placeholder="" required>
+                                <input type="text" id="dept" class="form-control" data-i18n="phDept" placeholder="Department" required>
                                 <div class="invalid-feedback">Department is required.</div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold" data-i18n="year">Year of Study</label>
-                                <input type="number" id="year" class="form-control" placeholder="" required min="1" max="7">
+                                <input type="number" id="year" class="form-control" data-i18n="phYear" placeholder="Year" required min="1" max="7">
                                 <div class="invalid-feedback">Year of study is required.</div>
                             </div>
                         </div>
@@ -133,12 +133,12 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold" data-i18n="block">Block Number</label>
-                                <input type="text" id="block" class="form-control" placeholder="" required>
+                                <input type="text" id="block" class="form-control" data-i18n="phBlock" placeholder="Block No" required>
                                 <div class="invalid-feedback">Block number is required.</div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold" data-i18n="dorm">Dorm Number</label>
-                                <input type="text" id="dorm" class="form-control" placeholder="" required>
+                                <input type="text" id="dorm" class="form-control" data-i18n="phDorm" placeholder="Dorm No" required>
                                 <div class="invalid-feedback">Dorm number is required.</div>
                             </div>
                         </div>
@@ -191,7 +191,6 @@
     <script>
         let isVerified = false;
 
-     
         window.addEventListener('load', () => {
             const checkSystem = setInterval(() => {
                 if (window.System) {
@@ -214,22 +213,21 @@
             }
         }
 
-       
         function verifyID() {
             const idField = document.getElementById('studentId');
             const enteredID = idField.value.trim();
             const fileInput = document.getElementById('idBack'); 
 
             if (!enteredID) {
-                System.showToast("Please enter your Student ID first", "warning");
+                System.showToast(System.getTrans('enterIdFirst'), "warning");
                 return;
             }
             if (fileInput.files.length === 0) {
-                System.showToast("Please upload Back ID image", "warning");
+                System.showToast(System.getTrans('uploadBackIdReq'), "warning");
                 return;
             }
 
-            System.showToast("Scanning Barcode...", "info");
+            System.showToast(System.getTrans('initScan'), "info");
             const fileUrl = URL.createObjectURL(fileInput.files[0]);
 
             Quagga.decodeSingle({
@@ -244,20 +242,17 @@
                     if(scannedCode.includes(enteredID) || enteredID.includes(scannedCode)) {
                         unlockReg();
                     } else {
-                        System.showToast("ID Mismatch! Check ID or image.", "danger");
+                        System.showToast(System.getTrans('idMismatch') + " (" + scannedCode + ")", "danger");
                     }
                 } else {
-                    setTimeout(() => {
-                        unlockReg();
-                        System.showToast("Manual ID Match Verified", "success");
-                    }, 1200);
+                    System.showToast(System.getTrans('noBarcode'), "danger");
                 }
             });
         }
 
         function unlockReg() {
             isVerified = true;
-            System.showToast("ID Verified!", "success");
+            System.showToast(System.getTrans('idMatch'), "success");
             const idField = document.getElementById('studentId');
             idField.readOnly = true; 
             idField.classList.add("verified-id");
@@ -265,32 +260,30 @@
             const btn = document.getElementById('submitBtn'); 
             btn.disabled = false; 
             btn.classList.replace('btn-secondary', 'btn-primary');
-            btn.innerText = "Register Account"; 
+            btn.innerText = System.getTrans('registerAccount'); 
             
             document.getElementById('verifyBtn').style.display = 'none';
         }
 
-  
         document.getElementById('regForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-        
             if (!this.checkValidity()) {
                 e.stopPropagation();
                 this.classList.add('was-validated');
-                System.showToast("Please fill all mandatory fields correctly", "warning");
+                System.showToast(System.getTrans('fillAllFields'), "warning");
                 return;
             }
 
             if(!isVerified) {
-                System.showToast("You must verify your ID first", "danger");
+                System.showToast(System.getTrans('verifyFirst'), "danger");
                 return;
             }
 
             const username = document.getElementById('username').value.trim();
             const usernameRegex = /^stud\d{5}$/; 
             if (!usernameRegex.test(username)) {
-                System.showToast("Username must be 'stud' followed by 5 digits", "warning");
+                System.showToast(System.getTrans('usernameStudReq'), "warning");
                 return;
             }
 
@@ -311,7 +304,7 @@
             const result = await System.register(newUser);
 
             if(result.success) {
-                System.showToast("Success! Redirecting...", "success");
+                System.showToast(System.getTrans('successRedirect'), "success");
                 setTimeout(() => window.location.href = 'index.html', 2000);
             } else {
                 System.showToast(result.message, "danger");

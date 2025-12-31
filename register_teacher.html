@@ -81,7 +81,7 @@
                                 <label class="form-label fw-bold" data-i18n="fullName">Full Name</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" id="fullName" class="form-control" placeholder="Enter Full Name" required>
+                                    <input type="text" id="fullName" class="form-control" data-i18n="phFullName" placeholder="Full Name" required>
                                     <div class="invalid-feedback">Full name is required.</div>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                                 <label class="form-label fw-bold" data-i18n="staffId">Staff ID</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="bi bi-card-heading"></i></span>
-                                    <input type="text" id="teacherId" class="form-control" placeholder="DBU..." required>
+                                    <input type="text" id="teacherId" class="form-control" data-i18n="phStaffId" placeholder="DBU..." required>
                                     <div class="invalid-feedback">Valid Staff ID is required.</div>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
                                 <label class="form-label fw-bold" data-i18n="username">Username</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="bi bi-at"></i></span>
-                                    <input type="text" id="username" class="form-control" placeholder="tech1234" required>
+                                    <input type="text" id="username" class="form-control" data-i18n="phUsernameTech" placeholder="tech1234" required>
                                     <div class="invalid-feedback">Username (tech + 4 digits) is required.</div>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                                 <label class="form-label fw-bold" data-i18n="password">Password</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="bi bi-key"></i></span>
-                                    <input type="password" id="password" class="form-control" required minlength="6">
+                                    <input type="password" id="password" class="form-control" data-i18n="phPassword" placeholder="Password" required minlength="6">
                                     <button class="btn btn-outline-secondary" type="button" onclick="toggleRegPwd()">
                                         <i class="bi bi-eye" id="eyeIcon"></i>
                                     </button>
@@ -120,7 +120,7 @@
                         <div class="card bg-light border-0 mb-4 shadow-sm rounded-4">
                             <div class="card-body p-4">
                                 <h5 class="card-title text-primary fw-bold" data-i18n="idVerifyTitle">ID Verification</h5>
-                                <p class="card-text small text-muted mb-3" data-i18n="idVerifyDesc">Upload your ID card image and scan the barcode to verify.</p>
+                                <p class="card-text small text-muted mb-3" data-i18n="idVerifyDesc">1. Upload Back ID image. 2. Click Scan to verify.</p>
                                 
                                 <div class="row g-3">
                                     <div class="col-md-6">
@@ -128,7 +128,7 @@
                                         <input type="file" id="idFront" class="form-control" accept="image/*" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold" data-i18n="uploadBack">Back ID (Barcode)</label>
+                                        <label class="form-label small fw-bold" data-i18n="uploadBack">Back ID (Barcode Side)</label>
                                         <input type="file" id="idBack" class="form-control" accept="image/*" required>
                                     </div>
                                 </div>
@@ -165,7 +165,6 @@
     <script>
         let isVerified = false;
 
-      
         window.addEventListener('load', () => {
             const checkSystem = setInterval(() => {
                 if (window.System) {
@@ -188,26 +187,25 @@
             }
         }
 
-     
         function verifyID() {
             const idField = document.getElementById('teacherId');
             const enteredID = idField.value.trim();
             const fileInput = document.getElementById('idBack'); 
 
             if (!enteredID) {
-                System.showToast("Please enter your Staff ID first", "warning");
+                System.showToast(System.getTrans('enterIdFirst'), "warning");
                 return;
             }
             if (fileInput.files.length === 0) {
-                System.showToast("Please upload the Back ID image", "warning");
+                System.showToast(System.getTrans('uploadBackIdReq'), "warning");
                 return;
             }
 
-            System.showToast("Initializing Scan...", "info");
+            System.showToast(System.getTrans('initScan'), "info");
             const fileUrl = URL.createObjectURL(fileInput.files[0]);
 
             Quagga.decodeSingle({
-                decoder: { readers: ["code_128_reader", "ean_reader", "code_39_reader"] },
+                decoder: { readers: ["code_128_reader", "ean_reader", "code_39_reader", "code_39_vin_reader"] },
                 locate: true,
                 src: fileUrl
             }, function(result) {
@@ -218,54 +216,48 @@
                     if(scannedCode.includes(enteredID) || enteredID.includes(scannedCode)) {
                         unlockReg();
                     } else {
-                        System.showToast("ID Mismatch! Please check image quality.", "danger");
+                        System.showToast(System.getTrans('idMismatch') + " (" + scannedCode + ")", "danger");
                     }
                 } else {
-                    
-                    setTimeout(() => {
-                        unlockReg();
-                        System.showToast("Staff ID Verified", "success");
-                    }, 1200);
+                    System.showToast(System.getTrans('noBarcode'), "danger");
                 }
             });
         }
 
         function unlockReg() {
             isVerified = true;
-            System.showToast("Identity Confirmed!", "success");
+            System.showToast(System.getTrans('idMatch'), "success");
             const idField = document.getElementById('teacherId');
             idField.readOnly = true; 
             idField.classList.add("verified-id");
             
             const btn = document.getElementById('submitBtn'); 
             btn.disabled = false; 
-            btn.innerText = "Create Teacher Account"; 
+            btn.innerText = System.getTrans('registerAccount'); 
+            btn.classList.replace('btn-secondary', 'btn-primary');
             
             document.getElementById('verifyBtn').style.display = 'none';
         }
 
-       
         document.getElementById('regForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-           
             if (!this.checkValidity()) {
                 e.stopPropagation();
                 this.classList.add('was-validated');
-                System.showToast("All fields are mandatory", "warning");
+                System.showToast(System.getTrans('fillAllFields'), "warning");
                 return;
             }
 
             if(!isVerified) {
-                System.showToast("Please verify your Staff ID first", "danger");
+                System.showToast(System.getTrans('verifyFirst'), "danger");
                 return;
             }
 
             const username = document.getElementById('username').value.trim();
-           
             const usernameRegex = /^tech\d{4}$/; 
             if (!usernameRegex.test(username)) {
-                System.showToast("Username must be 'tech' followed by 4 digits", "warning");
+                System.showToast(System.getTrans('usernameTechReq'), "warning");
                 return;
             }
 
@@ -283,7 +275,7 @@
             const result = await System.register(newUser);
 
             if(result.success) {
-                System.showToast("Account Created! Redirecting...", "success");
+                System.showToast(System.getTrans('successRedirect'), "success");
                 setTimeout(() => window.location.href = 'index.html', 2000);
             } else {
                 System.showToast(result.message, "danger");
