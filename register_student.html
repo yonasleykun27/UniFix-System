@@ -184,7 +184,6 @@
             else { input.type = 'password'; icon.classList.replace('bi-eye-slash', 'bi-eye'); }
         }
 
-        // --- FILE UPLOAD VERIFICATION ---
         function verifyID() {
             const enteredID = document.getElementById('studentId').value.trim();
             const fileInput = document.getElementById('idBack'); 
@@ -208,7 +207,6 @@
             });
         }
 
-        // --- MOBILE CAMERA LOGIC ---
         async function initMobileCamera() {
             const enteredID = document.getElementById('studentId').value.trim();
             if (!enteredID) { System.showToast(System.getTrans('enterIdFirst'), "warning"); return; }
@@ -271,8 +269,11 @@
             System.showToast(System.getTrans('idMatch'), "success");
             document.getElementById('studentId').readOnly = true; 
             document.getElementById('studentId').classList.add("verified-id");
+            
+            // Bypass file requirements
             document.getElementById('idFront').required = false;
             document.getElementById('idBack').required = false;
+            
             const btn = document.getElementById('submitBtn'); 
             btn.disabled = false; btn.innerText = System.getTrans('registerAccount'); 
             document.getElementById('verifyBtn').style.display = 'none';
@@ -287,6 +288,7 @@
             if (!document.getElementById('studentId').value) { System.showToast(System.getTrans('idReq'), "warning"); return; }
             if (!document.getElementById('username').value) { System.showToast(System.getTrans('userReq'), "warning"); return; }
             if (!document.getElementById('password').value) { System.showToast(System.getTrans('passReq'), "warning"); return; }
+            if (document.getElementById('password').value.length < 6) { System.showToast(System.getTrans('passMinLen'), "warning"); return; }
             if (!document.getElementById('dept').value) { System.showToast(System.getTrans('deptReq'), "warning"); return; }
             if (!document.getElementById('year').value) { System.showToast(System.getTrans('yearReq'), "warning"); return; }
             if (!document.getElementById('block').value) { System.showToast(System.getTrans('blockReq'), "warning"); return; }

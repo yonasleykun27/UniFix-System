@@ -68,7 +68,7 @@
 <body class="bg-university">
 
     <div class="utility-bar">
-        <div id="liveClock" class="badge bg-primary d-flex align-items-center shadow-sm" style="font-size: 0.85rem;">00:00</div>
+        <div id="liveClock" class="badge bg-primary d-flex align-items-center shadow-sm">00:00</div>
         <button class="btn btn-light btn-sm shadow-sm" onclick="if(window.System) System.toggleTheme()"><i id="themeIcon" class="bi bi-moon-stars-fill"></i></button>
         <button class="btn btn-light btn-sm shadow-sm" onclick="if(window.System) System.toggleLanguage()"><i class="bi bi-translate"></i> <span id="langBtnText">Amharic</span></button>
     </div>
@@ -116,8 +116,8 @@
                                 <p class="card-text small text-muted mb-3" data-i18n="idVerifyDesc">Option 1: Upload. Option 2: Mobile Camera.</p>
                                 
                                 <div class="row g-3" id="fileUploadRow">
-                                    <div class="col-md-6"><label class="form-label small fw-bold" data-i18n="uploadFront">Front ID</label><input type="file" id="idFront" class="form-control" accept="image/*" required></div>
-                                    <div class="col-md-6"><label class="form-label small fw-bold" data-i18n="uploadBack">Back ID</label><input type="file" id="idBack" class="form-control" accept="image/*" required></div>
+                                    <div class="col-md-6"><label class="form-label small fw-bold" data-i18n="uploadFront">Front ID Image</label><input type="file" id="idFront" class="form-control" accept="image/*" required></div>
+                                    <div class="col-md-6"><label class="form-label small fw-bold" data-i18n="uploadBack">Back ID (Barcode Side)</label><input type="file" id="idBack" class="form-control" accept="image/*" required></div>
                                 </div>
 
                                 <div class="d-grid gap-2 mt-4">
@@ -265,6 +265,7 @@
             if (!document.getElementById('teacherId').value) { System.showToast(System.getTrans('idReq'), "warning"); return; }
             if (!document.getElementById('username').value) { System.showToast(System.getTrans('userReq'), "warning"); return; }
             if (!document.getElementById('password').value) { System.showToast(System.getTrans('passReq'), "warning"); return; }
+            if (document.getElementById('password').value.length < 6) { System.showToast(System.getTrans('passMinLen'), "warning"); return; }
 
             if (!this.checkValidity()) {
                 e.stopPropagation(); this.classList.add('was-validated');
