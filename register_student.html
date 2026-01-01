@@ -16,7 +16,6 @@
         #interactive.viewport { display: none; margin-top: 15px; width: 100%; border-radius: 8px; overflow: hidden; }
         #interactive.viewport canvas, #interactive.viewport video { width: 100%; height: auto; }
         
-        /* Camera Modal Styles */
         .camera-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: #000; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; 
@@ -82,10 +81,7 @@
         <canvas id="cameraCanvas"></canvas>
         
         <div class="camera-controls">
-            <button id="btnCapture" class="cam-btn bg-danger" onclick="capturePhoto()">
-                <i class="bi bi-camera"></i>
-            </button>
-            
+            <button id="btnCapture" class="cam-btn bg-danger" onclick="capturePhoto()"><i class="bi bi-camera"></i></button>
             <div id="reviewControls" style="display: none; gap: 15px;">
                 <button class="btn btn-light btn-lg rounded-circle" onclick="retakePhoto()"><i class="bi bi-arrow-counterclockwise"></i></button>
                 <button class="btn btn-success btn-lg rounded-circle" onclick="confirmPhoto()"><i class="bi bi-check-lg"></i></button>
@@ -173,7 +169,7 @@
     <script>
         let isVerified = false;
         let stream = null;
-        let currentStep = 'front'; // front, back
+        let currentStep = 'front';
         let frontBlob = null;
         let backBlob = null;
 
@@ -194,7 +190,6 @@
             const fileInput = document.getElementById('idBack'); 
             if (!enteredID) { System.showToast(System.getTrans('enterIdFirst'), "warning"); return; }
             if (fileInput.files.length === 0) { System.showToast(System.getTrans('uploadBackIdReq'), "warning"); return; }
-
             processScan(URL.createObjectURL(fileInput.files[0]), enteredID);
         }
 
@@ -204,16 +199,12 @@
                 decoder: { readers: ["code_128_reader", "ean_reader", "code_39_reader"] },
                 locate: true, src: fileUrl
             }, function(result) {
-                // Revoke URL if created
                 if(fileUrl.startsWith('blob:')) URL.revokeObjectURL(fileUrl);
-
                 if(result && result.codeResult && result.codeResult.code) {
                     const scannedCode = result.codeResult.code.trim();
                     if(scannedCode.includes(enteredID) || enteredID.includes(scannedCode)) { unlockReg(); } 
                     else { System.showToast(System.getTrans('idMismatch'), "danger"); }
-                } else {
-                    System.showToast(System.getTrans('noBarcode'), "danger");
-                }
+                } else { System.showToast(System.getTrans('noBarcode'), "danger"); }
             });
         }
 
@@ -221,7 +212,6 @@
         async function initMobileCamera() {
             const enteredID = document.getElementById('studentId').value.trim();
             if (!enteredID) { System.showToast(System.getTrans('enterIdFirst'), "warning"); return; }
-
             document.getElementById('cameraOverlay').style.display = 'flex';
             currentStep = 'front';
             document.getElementById('camTitle').innerText = System.getTrans('camTitleFront');
@@ -233,28 +223,19 @@
                 stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
                 const video = document.getElementById('cameraVideo');
                 video.srcObject = stream;
-                video.style.display = 'block';
                 document.getElementById('cameraCanvas').style.display = 'none';
-                
+                video.style.display = 'block';
                 document.getElementById('btnCapture').style.display = 'flex';
                 document.getElementById('reviewControls').style.display = 'none';
-            } catch (err) {
-                System.showToast(System.getTrans('camError'), "danger");
-                closeCamera();
-            }
+            } catch (err) { System.showToast(System.getTrans('camError'), "danger"); closeCamera(); }
         }
 
         function capturePhoto() {
             const video = document.getElementById('cameraVideo');
             const canvas = document.getElementById('cameraCanvas');
-            const context = canvas.getContext('2d');
-
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            video.style.display = 'none';
-            canvas.style.display = 'block';
+            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            video.style.display = 'none'; canvas.style.display = 'block';
             document.getElementById('btnCapture').style.display = 'none';
             document.getElementById('reviewControls').style.display = 'flex';
         }
@@ -270,23 +251,18 @@
             const canvas = document.getElementById('cameraCanvas');
             canvas.toBlob(blob => {
                 if (currentStep === 'front') {
-                    frontBlob = blob;
-                    currentStep = 'back';
+                    frontBlob = blob; currentStep = 'back';
                     document.getElementById('camTitle').innerText = System.getTrans('camTitleBack');
-                    retakePhoto(); // Reset UI for next shot
+                    retakePhoto();
                 } else {
-                    backBlob = blob;
-                    closeCamera(); // Stop camera
-                    // Run Verification on Back Blob
-                    const enteredID = document.getElementById('studentId').value.trim();
-                    const blobUrl = URL.createObjectURL(backBlob);
-                    processScan(blobUrl, enteredID);
+                    backBlob = blob; closeCamera();
+                    processScan(URL.createObjectURL(backBlob), document.getElementById('studentId').value.trim());
                 }
             }, 'image/jpeg', 0.9);
         }
 
         function closeCamera() {
-            if (stream) { stream.getTracks().forEach(track => track.stop()); }
+            if (stream) stream.getTracks().forEach(track => track.stop());
             document.getElementById('cameraOverlay').style.display = 'none';
         }
 
@@ -295,11 +271,8 @@
             System.showToast(System.getTrans('idMatch'), "success");
             document.getElementById('studentId').readOnly = true; 
             document.getElementById('studentId').classList.add("verified-id");
-            
-            // Bypass file requirements
             document.getElementById('idFront').required = false;
             document.getElementById('idBack').required = false;
-            
             const btn = document.getElementById('submitBtn'); 
             btn.disabled = false; btn.innerText = System.getTrans('registerAccount'); 
             document.getElementById('verifyBtn').style.display = 'none';
@@ -308,6 +281,17 @@
 
         document.getElementById('regForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // FIX #3: Check specific fields for better error messages
+            if (!document.getElementById('fullName').value) { System.showToast(System.getTrans('nameReq'), "warning"); return; }
+            if (!document.getElementById('studentId').value) { System.showToast(System.getTrans('idReq'), "warning"); return; }
+            if (!document.getElementById('username').value) { System.showToast(System.getTrans('userReq'), "warning"); return; }
+            if (!document.getElementById('password').value) { System.showToast(System.getTrans('passReq'), "warning"); return; }
+            if (!document.getElementById('dept').value) { System.showToast(System.getTrans('deptReq'), "warning"); return; }
+            if (!document.getElementById('year').value) { System.showToast(System.getTrans('yearReq'), "warning"); return; }
+            if (!document.getElementById('block').value) { System.showToast(System.getTrans('blockReq'), "warning"); return; }
+            if (!document.getElementById('dorm').value) { System.showToast(System.getTrans('dormReq'), "warning"); return; }
+
             if (!this.checkValidity()) {
                 e.stopPropagation(); this.classList.add('was-validated');
                 System.showToast(System.getTrans('fillMandatory'), "warning"); return;

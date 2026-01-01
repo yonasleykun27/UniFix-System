@@ -43,19 +43,32 @@
             font-weight: 700;
         }
 
-        .utility-bar { position: fixed; top: 10px; right: 10px; z-index: 1000; display: flex; gap: 5px; }
-        
-        @media (max-width: 576px) {
-            .utility-bar { position: static; justify-content: center; margin-bottom: 20px; padding: 10px; background: var(--bs-tertiary-bg); border-radius: 10px; }
-            .card-custom { padding: 20px !important; border-radius: 15px; }
+        .utility-bar {
+            position: fixed; top: 10px; right: 10px; z-index: 1000;
+            display: flex; gap: 5px;
         }
+
+        @media (max-width: 576px) {
+            .utility-bar { 
+                position: static; 
+                justify-content: center; 
+                margin-bottom: 20px; 
+                padding: 10px;
+                background: var(--bs-tertiary-bg);
+                border-radius: 10px;
+            }
+            .card-custom { padding: 20px !important; border-radius: 15px; }
+            h2 { font-size: 1.5rem; }
+            .btn-lg { padding: 12px; font-size: 1rem; }
+        }
+
         .invalid-feedback { font-size: 0.75rem; margin-top: 0.25rem; }
     </style>
 </head>
 <body class="bg-university">
 
     <div class="utility-bar">
-        <div id="liveClock" class="badge bg-primary d-flex align-items-center shadow-sm">00:00</div>
+        <div id="liveClock" class="badge bg-primary d-flex align-items-center shadow-sm" style="font-size: 0.85rem;">00:00</div>
         <button class="btn btn-light btn-sm shadow-sm" onclick="if(window.System) System.toggleTheme()"><i id="themeIcon" class="bi bi-moon-stars-fill"></i></button>
         <button class="btn btn-light btn-sm shadow-sm" onclick="if(window.System) System.toggleLanguage()"><i class="bi bi-translate"></i> <span id="langBtnText">Amharic</span></button>
     </div>
@@ -246,6 +259,13 @@
 
         document.getElementById('regForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // FIX #3: Specific error checks
+            if (!document.getElementById('fullName').value) { System.showToast(System.getTrans('nameReq'), "warning"); return; }
+            if (!document.getElementById('teacherId').value) { System.showToast(System.getTrans('idReq'), "warning"); return; }
+            if (!document.getElementById('username').value) { System.showToast(System.getTrans('userReq'), "warning"); return; }
+            if (!document.getElementById('password').value) { System.showToast(System.getTrans('passReq'), "warning"); return; }
+
             if (!this.checkValidity()) {
                 e.stopPropagation(); this.classList.add('was-validated');
                 System.showToast(System.getTrans('fillMandatory'), "warning"); return;
