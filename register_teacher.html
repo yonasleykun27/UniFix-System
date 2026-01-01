@@ -260,7 +260,6 @@
         document.getElementById('regForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // FIX #3: Specific error checks
             if (!document.getElementById('fullName').value) { System.showToast(System.getTrans('nameReq'), "warning"); return; }
             if (!document.getElementById('teacherId').value) { System.showToast(System.getTrans('idReq'), "warning"); return; }
             if (!document.getElementById('username').value) { System.showToast(System.getTrans('userReq'), "warning"); return; }

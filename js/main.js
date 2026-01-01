@@ -18,7 +18,6 @@ const db = getFirestore(app);
 
 const TRANSLATIONS = {
     en: {
-        // --- General UI ---
         loginTitle: "UniFix Login", loginSubtitle: "University Problem Reporting System", 
         loginBtn: "Login", noAccount: "Don't have an account?",
         lblUsername: "Username", lblPassword: "Password",
@@ -27,8 +26,7 @@ const TRANSLATIONS = {
         darkMode: "Dark Mode", lightMode: "Light Mode", langName: "Amharic",
         successMsg: "Operation Successful", errorMsg: "An error occurred",
         confirmTitle: "Are you sure?", confirmBtn: "Yes, Proceed", cancelBtn: "Cancel", closeBtn: "Close",
-        
-        // --- Registration Pages ---
+       
         registerStudent: "Register as Student", registerTeacher: "Register as Teacher", registerAccount: "Register Account",
         regTitleStud: "Student Registration", regSubtitleStud: "Fill all fields and verify your ID card.",
         regTitleTeach: "Teacher Registration", regSubtitleTeach: "Faculty & Staff Account Creation",
@@ -40,8 +38,7 @@ const TRANSLATIONS = {
         scanBtn: "Scan & Verify ID",
         backToLogin: "Back to Login", 
         verifyFirst: "Verify ID First",
-        
-        // --- Mobile Camera Features ---
+       
         mobileCamBtn: "📷 Open Camera & Scan",
         camTitleFront: "Step 1: Capture Front ID",
         camTitleBack: "Step 2: Capture Back ID (Barcode)",
@@ -49,19 +46,17 @@ const TRANSLATIONS = {
         btnRetake: "Retake",
         btnUse: "Use Photo",
         camError: "Camera access denied. Please use file upload.",
-        
-        // --- Placeholders ---
+ 
         phFullName: "Enter Full Name", phStudentId: "DBU...", phStaffId: "DBU...",
         phUsernameStud: "stud12345", phUsernameTech: "tech1234",
         phDept: "e.g. Software Eng", phYear: "e.g. 3", phBlock: "Block No", phDorm: "Dorm No",
 
-        // --- JavaScript Messages & Validation Errors ---
         fillMandatory: "Please fill all mandatory fields correctly",
         nameReq: "Full Name is required",
         idReq: "ID Number is required",
         userReq: "Username is required",
         passReq: "Password is required",
-        passMinLen: "Password must be at least 6 characters", // NEW ERROR MESSAGE
+        passMinLen: "Password must be at least 6 characters", 
         deptReq: "Department is required",
         yearReq: "Year is required",
         blockReq: "Block Number is required",
@@ -79,7 +74,6 @@ const TRANSLATIONS = {
         usernameTechReq: "Username must be 'tech' followed by 4 digits",
         successRedirect: "Account Created! Redirecting...",
         
-        // --- Reporting ---
         reportIssue: "Report Issue", myHistory: "My History", submit: "Submit Report",
         category: "Category", phone: "Phone Number", urgency: "Urgency", description: "Description",
         status: "Status", actions: "Actions", date: "Date",
@@ -109,7 +103,7 @@ const TRANSLATIONS = {
         mandatoryMsg: "Please fill in all mandatory fields (Category, Phone, and Description)."
     },
     am: {
-        // --- General UI ---
+       
         loginTitle: "UniFix መግቢያ", loginSubtitle: "የዩኒቨርሲቲ ችግር ሪፖርት ማድረጊያ",
         loginBtn: "ግባ", noAccount: "መለያ የለዎትም?",
         lblUsername: "የተጠቃሚ ስም", lblPassword: "የይለፍ ቃል", 
@@ -118,8 +112,7 @@ const TRANSLATIONS = {
         darkMode: "ጨለማ", lightMode: "ብርሃን", langName: "English",
         successMsg: "ተሳክቷል", errorMsg: "ስህተት ተፈጥሯል",
         confirmTitle: "እርግጠኛ ነዎት?", confirmBtn: "አዎ", cancelBtn: "ይቅር", closeBtn: "ዝጋ",
-        
-        // --- Registration Pages ---
+
         registerStudent: "እንደ ተማሪ ይመዝገቡ", registerTeacher: "እንደ መምህር ይመዝገቡ", registerAccount: "መለያ ይፍጠሩ",
         regTitleStud: "የተማሪ ምዝገባ", regSubtitleStud: "እባክዎ ሁሉንም መረጃዎች ይሙሉ እና መታወቂያዎን ያረጋግጡ።",
         regTitleTeach: "የመምህራን ምዝገባ", regSubtitleTeach: "የመምህራን እና ሰራተኞች መለያ መፍጠሪያ",
@@ -133,7 +126,6 @@ const TRANSLATIONS = {
         idMismatch: "መታወቂያው አይዛመድም!", noBarcode: "ባርኮድ አልተገኘም",
         verifyFirst: "መጀመሪያ መታወቂያዎን ያረጋግጡ",
 
-        // --- Mobile Camera Features ---
         mobileCamBtn: "📷 ካሜራ ይክፈቱ",
         camTitleFront: "ደረጃ 1: የፊት መታወቂያ ፎቶ ያንሱ",
         camTitleBack: "ደረጃ 2: የኋላ መታወቂያ (ባርኮድ) ፎቶ ያንሱ",
@@ -142,18 +134,16 @@ const TRANSLATIONS = {
         btnUse: "ይህንን ተጠቀም",
         camError: "ካሜራው አልሰራም። እባክዎ ፍቃድ ይስጡ።",
 
-        // --- Placeholders ---
         phFullName: "ሙሉ ስም ያስገቡ", phStudentId: "DBU...", phStaffId: "DBU...",
         phUsernameStud: "stud12345", phUsernameTech: "tech1234",
         phDept: "ምሳሌ፡ Software Eng", phYear: "ምሳሌ፡ 3", phBlock: "ብሎክ ቁጥር", phDorm: "ዶርም ቁጥር",
 
-        // --- JavaScript Messages & Validation Errors ---
         fillMandatory: "እባክዎ ሁሉንም አስፈላጊ መረጃዎች በትክክል ይሙሉ",
         nameReq: "ሙሉ ስም ማስገባት ግዴታ ነው",
         idReq: "መታወቂያ ቁጥር ማስገባት ግዴታ ነው",
         userReq: "የተጠቃሚ ስም ማስገባት ግዴታ ነው",
         passReq: "የይለፍ ቃል ማስገባት ግዴታ ነው",
-        passMinLen: "የይለፍ ቃል ቢያንስ 6 ሆሄያት መሆን አለበት", // NEW ERROR MESSAGE
+        passMinLen: "የይለፍ ቃል ቢያንስ 6 ሆሄያት መሆን አለበት", 
         deptReq: "የትምህርት ክፍል ማስገባት ግዴታ ነው",
         yearReq: "የትምህርት ዘመን ማስገባት ግዴታ ነው",
         blockReq: "የብሎክ ቁጥር ማስገባት ግዴታ ነው",
@@ -171,7 +161,6 @@ const TRANSLATIONS = {
         usernameTechReq: "የተጠቃሚ ስም 'tech' እና 4 ቁጥሮች መሆን አለበት",
         successRedirect: "ተሳክቷል! ወደ መግቢያ በመውሰድ ላይ...",
 
-        // --- Reporting ---
         reportIssue: "ችግር ሪፖርት አድርግ", myHistory: "የኔ ታሪክ", submit: "ላክ",
         category: "ምድብ", phone: "ስልክ ቁጥር", urgency: "አስቸኳይነት", description: "ዝርዝር",
         status: "ሁኔታ", actions: "ተግባራት", date: "ቀን",
@@ -209,7 +198,6 @@ const System = {
         const storedUser = JSON.parse(localStorage.getItem('unifix_user'));
         if (storedUser) this.currentUser = storedUser;
 
-        // FIX: Force data refresh on load to ensure round-robin counters are accurate
         await this.refreshData();
 
         if (storedUser) {
@@ -244,7 +232,7 @@ const System = {
 
     refreshData: async function() {
         try {
-            // Fetch fresh data from Firestore
+            
             const uSnap = await getDocs(collection(db, "users"));
             this.cachedUsers = uSnap.docs.map(doc => ({ firebaseId: doc.id, ...doc.data() }));
 
@@ -376,11 +364,11 @@ const System = {
 
     submitReport: async function(newReport) {
         try {
-            // FIX: Refresh data first to ensure we have the latest counts for Round-Robin
+           
             await this.refreshData();
             
             const admins = this.cachedUsers.filter(u => u.role === 'Admin');
-            // Sort by username to ensure deterministic order on all clients
+            
             admins.sort((a, b) => a.username.localeCompare(b.username));
 
             if (admins.length > 0) {
