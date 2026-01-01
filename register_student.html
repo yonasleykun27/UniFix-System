@@ -126,8 +126,8 @@
                             <div class="col-md-6"><label class="form-label fw-bold" data-i18n="year">Year of Study</label><input type="number" id="year" class="form-control" data-i18n="phYear" placeholder="Year" required min="1" max="7"></div>
                         </div>
                         <div class="row g-3 mb-4">
-                            <div class="col-md-6"><label class="form-label fw-bold" data-i18n="block">Block Number</label><input type="text" id="block" class="form-control" data-i18n="phBlock" placeholder="Block" required></div>
-                            <div class="col-md-6"><label class="form-label fw-bold" data-i18n="dorm">Dorm Number</label><input type="text" id="dorm" class="form-control" data-i18n="phDorm" placeholder="Dorm" required></div>
+                            <div class="col-md-6"><label class="form-label fw-bold" data-i18n="block">Block Number</label><input type="number" id="block" class="form-control" data-i18n="phBlock" placeholder="Block No" required></div>
+                            <div class="col-md-6"><label class="form-label fw-bold" data-i18n="dorm">Dorm Number</label><input type="number" id="dorm" class="form-control" data-i18n="phDorm" placeholder="Dorm No" required></div>
                         </div>
 
                         <div class="card bg-light border-0 mb-4 shadow-sm rounded-4">
@@ -136,8 +136,8 @@
                                 <p class="card-text small text-muted mb-3" data-i18n="idVerifyDesc">Option 1: Upload. Option 2: Mobile Camera.</p>
                                 
                                 <div class="row g-3" id="fileUploadRow">
-                                    <div class="col-md-6"><label class="form-label small fw-bold" data-i18n="uploadFront">Front ID</label><input type="file" id="idFront" class="form-control" accept="image/*" required></div>
-                                    <div class="col-md-6"><label class="form-label small fw-bold" data-i18n="uploadBack">Back ID</label><input type="file" id="idBack" class="form-control" accept="image/*" required></div>
+                                    <div class="col-md-6"><label class="form-label small fw-bold" data-i18n="uploadFront">Front ID Image</label><input type="file" id="idFront" class="form-control" accept="image/*" required></div>
+                                    <div class="col-md-6"><label class="form-label small fw-bold" data-i18n="uploadBack">Back ID (Barcode Side)</label><input type="file" id="idBack" class="form-control" accept="image/*" required></div>
                                 </div>
 
                                 <div class="d-grid gap-2 mt-4">
@@ -269,10 +269,8 @@
             System.showToast(System.getTrans('idMatch'), "success");
             document.getElementById('studentId').readOnly = true; 
             document.getElementById('studentId').classList.add("verified-id");
-            
             document.getElementById('idFront').required = false;
             document.getElementById('idBack').required = false;
-            
             const btn = document.getElementById('submitBtn'); 
             btn.disabled = false; btn.innerText = System.getTrans('registerAccount'); 
             document.getElementById('verifyBtn').style.display = 'none';
@@ -282,15 +280,29 @@
         document.getElementById('regForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (!document.getElementById('fullName').value) { System.showToast(System.getTrans('nameReq'), "warning"); return; }
+            const name = document.getElementById('fullName').value;
+            const dept = document.getElementById('dept').value;
+            const block = document.getElementById('block').value;
+            const dorm = document.getElementById('dorm').value;
+
+            if (!name) { System.showToast(System.getTrans('nameReq'), "warning"); return; }
+            if (/\d/.test(name)) { System.showToast(System.getTrans('nameNumError'), "warning"); return; } 
+            
             if (!document.getElementById('studentId').value) { System.showToast(System.getTrans('idReq'), "warning"); return; }
             if (!document.getElementById('username').value) { System.showToast(System.getTrans('userReq'), "warning"); return; }
             if (!document.getElementById('password').value) { System.showToast(System.getTrans('passReq'), "warning"); return; }
             if (document.getElementById('password').value.length < 6) { System.showToast(System.getTrans('passMinLen'), "warning"); return; }
-            if (!document.getElementById('dept').value) { System.showToast(System.getTrans('deptReq'), "warning"); return; }
+            
+            if (!dept) { System.showToast(System.getTrans('deptReq'), "warning"); return; }
+            if (/\d/.test(dept)) { System.showToast(System.getTrans('deptNumError'), "warning"); return; } 
+
             if (!document.getElementById('year').value) { System.showToast(System.getTrans('yearReq'), "warning"); return; }
-            if (!document.getElementById('block').value) { System.showToast(System.getTrans('blockReq'), "warning"); return; }
-            if (!document.getElementById('dorm').value) { System.showToast(System.getTrans('dormReq'), "warning"); return; }
+            
+            if (!block) { System.showToast(System.getTrans('blockReq'), "warning"); return; }
+            if (isNaN(block)) { System.showToast(System.getTrans('blockNumError'), "warning"); return; } 
+
+            if (!dorm) { System.showToast(System.getTrans('dormReq'), "warning"); return; }
+            if (isNaN(dorm)) { System.showToast(System.getTrans('dormNumError'), "warning"); return; } 
 
             if (!this.checkValidity()) {
                 e.stopPropagation(); this.classList.add('was-validated');
@@ -303,14 +315,14 @@
 
             const newUser = {
                 role: 'Student',
-                fullName: document.getElementById('fullName').value.trim(),
+                fullName: name.trim(),
                 id: document.getElementById('studentId').value.trim(),
                 username: username,
                 password: document.getElementById('password').value,
-                dept: document.getElementById('dept').value.trim(),
+                dept: dept.trim(),
                 year: document.getElementById('year').value,
-                block: document.getElementById('block').value.trim(),
-                dorm: document.getElementById('dorm').value.trim(),
+                block: block.trim(),
+                dorm: dorm.trim(),
                 warnings: 0, isBanned: false
             };
 

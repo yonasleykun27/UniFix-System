@@ -26,7 +26,7 @@ const TRANSLATIONS = {
         darkMode: "Dark Mode", lightMode: "Light Mode", langName: "Amharic",
         successMsg: "Operation Successful", errorMsg: "An error occurred",
         confirmTitle: "Are you sure?", confirmBtn: "Yes, Proceed", cancelBtn: "Cancel", closeBtn: "Close",
-       
+        
         registerStudent: "Register as Student", registerTeacher: "Register as Teacher", registerAccount: "Register Account",
         regTitleStud: "Student Registration", regSubtitleStud: "Fill all fields and verify your ID card.",
         regTitleTeach: "Teacher Registration", regSubtitleTeach: "Faculty & Staff Account Creation",
@@ -38,7 +38,7 @@ const TRANSLATIONS = {
         scanBtn: "Scan & Verify ID",
         backToLogin: "Back to Login", 
         verifyFirst: "Verify ID First",
-       
+        
         mobileCamBtn: "📷 Open Camera & Scan",
         camTitleFront: "Step 1: Capture Front ID",
         camTitleBack: "Step 2: Capture Back ID (Barcode)",
@@ -46,21 +46,25 @@ const TRANSLATIONS = {
         btnRetake: "Retake",
         btnUse: "Use Photo",
         camError: "Camera access denied. Please use file upload.",
- 
+        
         phFullName: "Enter Full Name", phStudentId: "DBU...", phStaffId: "DBU...",
         phUsernameStud: "stud12345", phUsernameTech: "tech1234",
         phDept: "e.g. Software Eng", phYear: "e.g. 3", phBlock: "Block No", phDorm: "Dorm No",
 
         fillMandatory: "Please fill all mandatory fields correctly",
         nameReq: "Full Name is required",
+        nameNumError: "Full Name cannot contain numbers",
         idReq: "ID Number is required",
         userReq: "Username is required",
         passReq: "Password is required",
         passMinLen: "Password must be at least 6 characters", 
         deptReq: "Department is required",
+        deptNumError: "Department Name cannot contain numbers",
         yearReq: "Year is required",
         blockReq: "Block Number is required",
+        blockNumError: "Block Number must contain only digits",
         dormReq: "Dorm Number is required",
+        dormNumError: "Dorm Number must contain only digits",
         
         enterIdFirst: "Please enter your ID first",
         uploadBackIdReq: "Please upload the Back ID image or use Camera",
@@ -103,7 +107,6 @@ const TRANSLATIONS = {
         mandatoryMsg: "Please fill in all mandatory fields (Category, Phone, and Description)."
     },
     am: {
-       
         loginTitle: "UniFix መግቢያ", loginSubtitle: "የዩኒቨርሲቲ ችግር ሪፖርት ማድረጊያ",
         loginBtn: "ግባ", noAccount: "መለያ የለዎትም?",
         lblUsername: "የተጠቃሚ ስም", lblPassword: "የይለፍ ቃል", 
@@ -112,7 +115,7 @@ const TRANSLATIONS = {
         darkMode: "ጨለማ", lightMode: "ብርሃን", langName: "English",
         successMsg: "ተሳክቷል", errorMsg: "ስህተት ተፈጥሯል",
         confirmTitle: "እርግጠኛ ነዎት?", confirmBtn: "አዎ", cancelBtn: "ይቅር", closeBtn: "ዝጋ",
-
+        
         registerStudent: "እንደ ተማሪ ይመዝገቡ", registerTeacher: "እንደ መምህር ይመዝገቡ", registerAccount: "መለያ ይፍጠሩ",
         regTitleStud: "የተማሪ ምዝገባ", regSubtitleStud: "እባክዎ ሁሉንም መረጃዎች ይሙሉ እና መታወቂያዎን ያረጋግጡ።",
         regTitleTeach: "የመምህራን ምዝገባ", regSubtitleTeach: "የመምህራን እና ሰራተኞች መለያ መፍጠሪያ",
@@ -140,14 +143,18 @@ const TRANSLATIONS = {
 
         fillMandatory: "እባክዎ ሁሉንም አስፈላጊ መረጃዎች በትክክል ይሙሉ",
         nameReq: "ሙሉ ስም ማስገባት ግዴታ ነው",
+        nameNumError: "ሙሉ ስም ቁጥር መያዝ የለበትም",
         idReq: "መታወቂያ ቁጥር ማስገባት ግዴታ ነው",
         userReq: "የተጠቃሚ ስም ማስገባት ግዴታ ነው",
         passReq: "የይለፍ ቃል ማስገባት ግዴታ ነው",
         passMinLen: "የይለፍ ቃል ቢያንስ 6 ሆሄያት መሆን አለበት", 
         deptReq: "የትምህርት ክፍል ማስገባት ግዴታ ነው",
+        deptNumError: "የትምህርት ክፍል ስም ቁጥር መያዝ የለበትም",
         yearReq: "የትምህርት ዘመን ማስገባት ግዴታ ነው",
         blockReq: "የብሎክ ቁጥር ማስገባት ግዴታ ነው",
+        blockNumError: "የብሎክ ቁጥር ቁጥሮችን ብቻ መያዝ አለበት",
         dormReq: "የዶርም ቁጥር ማስገባት ግዴታ ነው",
+        dormNumError: "የዶርም ቁጥር ቁጥሮችን ብቻ መያዝ አለበት",
 
         enterIdFirst: "እባክዎ መጀመሪያ መታወቂያ ቁጥር ያስገቡ",
         uploadBackIdReq: "እባክዎ የኋላ መታወቂያ ምስል ይጫኑ",
@@ -161,6 +168,7 @@ const TRANSLATIONS = {
         usernameTechReq: "የተጠቃሚ ስም 'tech' እና 4 ቁጥሮች መሆን አለበት",
         successRedirect: "ተሳክቷል! ወደ መግቢያ በመውሰድ ላይ...",
 
+        // --- Reporting ---
         reportIssue: "ችግር ሪፖርት አድርግ", myHistory: "የኔ ታሪክ", submit: "ላክ",
         category: "ምድብ", phone: "ስልክ ቁጥር", urgency: "አስቸኳይነት", description: "ዝርዝር",
         status: "ሁኔታ", actions: "ተግባራት", date: "ቀን",
@@ -232,7 +240,6 @@ const System = {
 
     refreshData: async function() {
         try {
-            
             const uSnap = await getDocs(collection(db, "users"));
             this.cachedUsers = uSnap.docs.map(doc => ({ firebaseId: doc.id, ...doc.data() }));
 
@@ -364,11 +371,9 @@ const System = {
 
     submitReport: async function(newReport) {
         try {
-           
             await this.refreshData();
             
             const admins = this.cachedUsers.filter(u => u.role === 'Admin');
-            
             admins.sort((a, b) => a.username.localeCompare(b.username));
 
             if (admins.length > 0) {

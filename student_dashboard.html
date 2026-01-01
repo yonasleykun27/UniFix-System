@@ -52,7 +52,6 @@
             flex-direction: column; transition: opacity 0.5s;
         }
 
-   
         [data-bs-theme="light"] .nav-pills .nav-link:not(.active) {
             background-color: #f8f9fa !important; 
             color: #212529 !important; 
@@ -75,7 +74,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
-     
         [data-bs-theme="dark"] .table thead th {
             background-color: #000000 !important; 
             color: #ffffff !important;
@@ -89,7 +87,6 @@
             background-color: #1e1e1e; 
         }
 
-       
         @media (max-width: 768px) {
             .table thead { display: none; } 
             .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
@@ -117,7 +114,6 @@
             [data-bs-theme="dark"] .table td { border-bottom-color: #333; }
             .table td:last-child { border-bottom: none; }
 
-           
             .table td::before { 
                 content: attr(data-label); 
                 font-weight: 800; 
@@ -223,7 +219,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold" data-i18n="phone">Phone Number</label>
-                                <input type="tel" id="phone" class="form-control" placeholder="09..." required>
+                                <input type="tel" id="phone" class="form-control" placeholder="09... / 07... / +251..." required>
                                 <div class="invalid-feedback">A valid phone number is required.</div>
                             </div>
                         </div>
@@ -379,7 +375,8 @@
                 deleteConfirmMsg: "Delete this report?", reportRemoved: "Report removed from view.",
                 date: "Date", category: "Category", description: "Description", status: "Status", actions: "Actions",
                 warningReason: "Reason for warning:",
-                mandatoryMsg: "Please fill in all mandatory fields (Category, Phone, and Description)."
+                mandatoryMsg: "Please fill in all mandatory fields (Category, Phone, and Description).",
+                invalidPhone: "Invalid Phone Format! (Use 09.., 07.., or +251..)"
             },
             am: {
                 successMsg: "ተሳክቷል", errorMsg: "ስህተት ተፈጥሯል",
@@ -388,7 +385,8 @@
                 deleteConfirmMsg: "ይህንን ሪፖርት መሰረዝ ይፈልጋሉ?", reportRemoved: "ሪፖርቱ ከእይታ ተወግዷል",
                 date: "ቀን", category: "ምድብ", description: "ዝርዝር", status: "ሁኔታ", actions: "ተግባራት",
                 warningReason: "የማስጠንቀቂያ ምክንያት:",
-                mandatoryMsg: "እባክዎ ሁሉንም አስፈላጊ መረጃዎች ይሙሉ (ምድብ፣ ስልክ እና ዝርዝር መግለጫ)።"
+                mandatoryMsg: "እባክዎ ሁሉንም አስፈላጊ መረጃዎች ይሙሉ (ምድብ፣ ስልክ እና ዝርዝር መግለጫ)።",
+                invalidPhone: "ትክክለኛ ስልክ ቁጥር ያስገቡ! (09.., 07.., ወይም +251..)"
             }
         };
 
@@ -440,6 +438,15 @@
 
         document.getElementById('reportForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const phoneInput = document.getElementById('phone').value.trim();
+            const phoneRegex = /^(09|07)\d{8}$|^\+251\d{9}$/;
+
+            if (!phoneRegex.test(phoneInput)) {
+                System.showToast(window.getTrans('invalidPhone'), "warning");
+                return; 
+            }
+
             if (!this.checkValidity()) {
                 e.stopPropagation();
                 this.classList.add('was-validated');
@@ -457,7 +464,7 @@
 
             const newReport = {
                 id: Date.now(), reporterUsername: currentUser.username, reporterName: currentUser.fullName, reporterId: currentUser.id, reporterRole: 'Student',
-                reporterPhone: document.getElementById('phone').value, category: cat, urgency: document.getElementById('urgency').value, description: document.getElementById('description').value,
+                reporterPhone: phoneInput, category: cat, urgency: document.getElementById('urgency').value, description: document.getElementById('description').value,
                 status: 'Pending', assignedTo: null, date: new Date().toLocaleDateString(), specificDetails: d, hiddenFromReporter: false
             };
             
@@ -483,7 +490,7 @@
                     let badgeClass = r.status === 'Pending' ? 'bg-warning text-dark' : (['Finished','Completed'].includes(r.status) ? 'bg-success' : 'bg-info text-dark');
                     if(r.status === 'Declined') badgeClass = 'bg-danger';
 
-                   
+                    
                     let detailBoxHtml = `<div class="mb-1"><strong>${r.category}</strong></div><div class="text-muted small">${r.description}</div>`;
                     if(r.specificDetails) {
                         detailBoxHtml += `<div class="detail-box">`;
