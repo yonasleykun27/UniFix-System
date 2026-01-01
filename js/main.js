@@ -18,13 +18,17 @@ const db = getFirestore(app);
 
 const TRANSLATIONS = {
     en: {
+        // --- General UI ---
         loginTitle: "UniFix Login", loginSubtitle: "University Problem Reporting System", 
         loginBtn: "Login", noAccount: "Don't have an account?",
         lblUsername: "Username", lblPassword: "Password",
         phUsername: "Enter Username", phPassword: "Enter Password", 
         welcome: "Welcome", logout: "Logout", dashboard: "Dashboard",
         darkMode: "Dark Mode", lightMode: "Light Mode", langName: "Amharic",
+        successMsg: "Operation Successful", errorMsg: "An error occurred",
+        confirmTitle: "Are you sure?", confirmBtn: "Yes, Proceed", cancelBtn: "Cancel", closeBtn: "Close",
         
+        // --- Registration Pages ---
         registerStudent: "Register as Student", registerTeacher: "Register as Teacher", registerAccount: "Register Account",
         regTitleStud: "Student Registration", regSubtitleStud: "Fill all fields and verify your ID card.",
         regTitleTeach: "Teacher Registration", regSubtitleTeach: "Faculty & Staff Account Creation",
@@ -34,26 +38,38 @@ const TRANSLATIONS = {
         uploadFront: "Upload Front ID", uploadBack: "Upload Back ID (Barcode)", 
         idVerifyTitle: "ID Card Verification", idVerifyDesc: "1. Upload Back ID image. 2. Click Scan to verify.",
         scanBtn: "Scan & Verify ID",
-        backToLogin: "Back to Login", scanning: "Scanning... Please wait.", idMatch: "Identity Confirmed!", 
-        idMismatch: "ID Mismatch! Barcode does not match input.", 
-        noBarcode: "No readable barcode found. Try a clearer image.",
+        backToLogin: "Back to Login", 
         verifyFirst: "Verify ID First",
         
+        // --- Mobile Camera Features (NEW) ---
+        mobileCamBtn: "📷 Open Camera & Scan",
+        camTitleFront: "Step 1: Capture Front ID",
+        camTitleBack: "Step 2: Capture Back ID (Barcode)",
+        btnCapture: "Capture Photo",
+        btnRetake: "Retake",
+        btnUse: "Use Photo",
+        camError: "Camera access denied. Please use file upload.",
+        
+        // --- Placeholders ---
         phFullName: "Enter Full Name", phStudentId: "DBU...", phStaffId: "DBU...",
         phUsernameStud: "stud12345", phUsernameTech: "tech1234",
         phDept: "e.g. Software Eng", phYear: "e.g. 3", phBlock: "Block No", phDorm: "Dorm No",
 
-        successMsg: "Operation Successful", errorMsg: "An error occurred",
+        // --- JavaScript Messages ---
         fillAllFields: "Please fill all mandatory fields correctly",
         enterIdFirst: "Please enter your ID first",
-        uploadBackIdReq: "Please upload the Back ID image",
-        initScan: "Initializing Scan...",
+        uploadBackIdReq: "Please upload the Back ID image or use Camera",
+        initScan: "Processing Image...",
+        idMatch: "Identity Confirmed!",
+        idMismatch: "ID Mismatch! Barcode does not match input.",
+        noBarcode: "No readable barcode found. Try a clearer image.",
         userDuplicate: "Username already exists.",
         idDuplicate: "This ID is already registered.",
         usernameStudReq: "Username must be 'stud' followed by 5 digits",
         usernameTechReq: "Username must be 'tech' followed by 4 digits",
         successRedirect: "Account Created! Redirecting...",
         
+        // --- Reporting ---
         reportIssue: "Report Issue", myHistory: "My History", submit: "Submit Report",
         category: "Category", phone: "Phone Number", urgency: "Urgency", description: "Description",
         status: "Status", actions: "Actions", date: "Date",
@@ -80,17 +96,20 @@ const TRANSLATIONS = {
         locationDetails: "Location & Details", reporterInfo: "Reporter Info",
         jobFinishedMsg: "Mark this job as finished?",
         bannedMsg: "Account Banned.",
-        mandatoryMsg: "Please fill in all mandatory fields (Category, Phone, and Description).",
-        confirmTitle: "Are you sure?", confirmBtn: "Yes, Proceed", cancelBtn: "Cancel", closeBtn: "Close"
+        mandatoryMsg: "Please fill in all mandatory fields (Category, Phone, and Description)."
     },
     am: {
+        // --- General UI ---
         loginTitle: "UniFix መግቢያ", loginSubtitle: "የዩኒቨርሲቲ ችግር ሪፖርት ማድረጊያ",
         loginBtn: "ግባ", noAccount: "መለያ የለዎትም?",
         lblUsername: "የተጠቃሚ ስም", lblPassword: "የይለፍ ቃል", 
         phUsername: "የተጠቃሚ ስም ያስገቡ", phPassword: "የይለፍ ቃል ያስገቡ",
         welcome: "እንኳን ደህና መጡ", logout: "ውጣ", dashboard: "ዳሽቦርድ",
         darkMode: "ጨለማ", lightMode: "ብርሃን", langName: "English",
+        successMsg: "ተሳክቷል", errorMsg: "ስህተት ተፈጥሯል",
+        confirmTitle: "እርግጠኛ ነዎት?", confirmBtn: "አዎ", cancelBtn: "ይቅር", closeBtn: "ዝጋ",
         
+        // --- Registration Pages ---
         registerStudent: "እንደ ተማሪ ይመዝገቡ", registerTeacher: "እንደ መምህር ይመዝገቡ", registerAccount: "መለያ ይፍጠሩ",
         regTitleStud: "የተማሪ ምዝገባ", regSubtitleStud: "እባክዎ ሁሉንም መረጃዎች ይሙሉ እና መታወቂያዎን ያረጋግጡ።",
         regTitleTeach: "የመምህራን ምዝገባ", regSubtitleTeach: "የመምህራን እና ሰራተኞች መለያ መፍጠሪያ",
@@ -100,25 +119,37 @@ const TRANSLATIONS = {
         uploadFront: "የፊት መታወቂያ ጫን", uploadBack: "የኋላ መታወቂያ ጫን",
         idVerifyTitle: "መታወቂያ ማረጋገጫ", idVerifyDesc: "1. የኋላ መታወቂያ ፎቶ ይጫኑ። 2. 'ስካን' የሚለውን ይጫኑ።",
         scanBtn: "የኋላ መታወቂያ ስካን",
-        backToLogin: "ወደ መግቢያ ተመለስ", scanning: "በመፈለግ ላይ...", idMatch: "መታወቂያው ተረጋግጧል!", 
-        idMismatch: "መታወቂያው አይዛመድም! ባርኮዱ እና የገባው ቁጥር አንድ አይደሉም።", 
-        noBarcode: "ባርኮድ አልተገኘም። እባክዎ ግልጽ ምስል ይሞክሩ።",
+        backToLogin: "ወደ መግቢያ ተመለስ", scanning: "በመፈለግ ላይ...", idMatch: "ተረጋግጧል!", 
+        idMismatch: "መታወቂያው አይዛመድም!", noBarcode: "ባርኮድ አልተገኘም",
         verifyFirst: "መጀመሪያ መታወቂያዎን ያረጋግጡ",
 
+        // --- Mobile Camera Features (NEW) ---
+        mobileCamBtn: "📷 ካሜራ ይክፈቱ",
+        camTitleFront: "ደረጃ 1: የፊት መታወቂያ ፎቶ ያንሱ",
+        camTitleBack: "ደረጃ 2: የኋላ መታወቂያ (ባርኮድ) ፎቶ ያንሱ",
+        btnCapture: "ፎቶ አንሳ",
+        btnRetake: "ድጋሚ አንሳ",
+        btnUse: "ይህንን ተጠቀም",
+        camError: "ካሜራው አልሰራም። እባክዎ ፍቃድ ይስጡ።",
+
+        // --- Placeholders ---
         phFullName: "ሙሉ ስም ያስገቡ", phStudentId: "DBU...", phStaffId: "DBU...",
         phUsernameStud: "stud12345", phUsernameTech: "tech1234",
         phDept: "ምሳሌ፡ Software Eng", phYear: "ምሳሌ፡ 3", phBlock: "ብሎክ ቁጥር", phDorm: "ዶርም ቁጥር",
 
-        successMsg: "ተሳክቷል", errorMsg: "ስህተት ተፈጥሯል",
+        // --- JavaScript Messages ---
         fillAllFields: "እባክዎ ሁሉንም አስፈላጊ መረጃዎች በትክክል ይሙሉ",
         enterIdFirst: "እባክዎ መጀመሪያ መታወቂያ ቁጥር ያስገቡ",
         uploadBackIdReq: "እባክዎ የኋላ መታወቂያ ምስል ይጫኑ",
-        initScan: "ስካን በማድረግ ላይ...",
+        initScan: "ባርኮድ በመፈለግ ላይ...",
+        idMatch: "መታወቂያው በተሳካ ሁኔታ ተረጋግጧል!",
+        idMismatch: "መታወቂያው አይዛመድም! ባርኮዱ እና የገባው ቁጥር አንድ አይደሉም።",
+        noBarcode: "ባርኮድ አልተገኘም። እባክዎ ግልጽ ምስል ይሞክሩ።",
         userDuplicate: "ይህ የተጠቃሚ ስም ተይዟል",
         idDuplicate: "ይህ መለያ ቁጥር በሌላ ተጠቃሚ ተመዝግቧል",
         usernameStudReq: "የተጠቃሚ ስም 'stud' እና 5 ቁጥሮች መሆን አለበት",
         usernameTechReq: "የተጠቃሚ ስም 'tech' እና 4 ቁጥሮች መሆን አለበት",
-        successRedirect: "መለያ ተፈጥሯል! ወደ መግቢያ...",
+        successRedirect: "ተሳክቷል! ወደ መግቢያ በመውሰድ ላይ...",
 
         // --- Reporting ---
         reportIssue: "ችግር ሪፖርት አድርግ", myHistory: "የኔ ታሪክ", submit: "ላክ",
@@ -144,8 +175,7 @@ const TRANSLATIONS = {
         locationDetails: "የቦታ እና ዝርዝር መረጃ", reporterInfo: "የሪፖርት አቅራቢ መረጃ",
         jobFinishedMsg: "ይህንን ስራ እንደተጠናቀቀ ምልክት ማድረግ ይፈልጋሉ?",
         bannedMsg: "መለያዎ ታግዷል",
-        mandatoryMsg: "እባክዎ ሁሉንም አስፈላጊ መስኮች ይሙሉ (ምድብ፣ ስልክ እና መግለጫ)።",
-        confirmTitle: "እርግጠኛ ነዎት?", confirmBtn: "አዎ", cancelBtn: "ይቅር", closeBtn: "ዝጋ"
+        mandatoryMsg: "እባክዎ ሁሉንም አስፈላጊ መስኮች ይሙሉ (ምድብ፣ ስልክ እና መግለጫ)።"
     }
 };
 
